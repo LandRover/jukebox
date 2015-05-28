@@ -3,6 +3,10 @@
 ## What is Jukebox?
 Jukebox is an open-source music platform, a Grooveshark(R.I.P) inspired. Built using MARS for backend and backbone(Underscore and jQuery) for frontend.
 
+I built it mainly for myself back in 2013 to be able to access my music library from anywhere and allow my friends and family to enjoy it as well rather than everyone storing their own data. A while go Grooveshark (Liked it a lot) also closed and I decided to open-source the project for few reasons, mainly get more ideas and share with my friends the source code and allow everyone basicly to have their own library.
+
+My goal is to apply techniques used in modern web building, such as AMD modules, dependency management, build process, optimization and monitoring tools as well as performance.
+
 Some of the features included in Jukebox:
  * Play your music
  * Search for music
@@ -17,6 +21,8 @@ Some of the features included in Jukebox:
  * Configurable path for mp3 dir (must follow strict convenstions).
  * ID3 tag parsing for v2.1, 2.3 and 2.4.
  * Supports MP3 only.
+ * WebAudio based audio player with crossfade feature (100% HTML5, not flash required).
+ * Due to strick restrictions on the mp3 content dir I'm able to print the albums nicly with a huge cover flow.
 
 ### MP3 dir convenstions:
  1. The general structure inside the MP3 Path is: Artist\Album (Year)
@@ -24,12 +30,13 @@ Some of the features included in Jukebox:
  2. Inside the artist dir all albums must contain a 4 digit year (0000)
  3. Each album must contain at least 500x500 under the name cover.jpg (ex. Artist\Album (Year)\cover.jpg)
  4. Other images like back.jpg, cd.jpg, front.jpg also allowed but currently not displayed.
- 5. Inside an album dir, all mp3 files must be in 4 possible formats:
+ 5. For multi CD albums the first digit before the trackID should be the CDID
+ 6. Inside an album dir, all mp3 files must be in 4 possible formats:
     * $num(%track%,2) - %title%
     * $num(%track%,2) - %artist% - %title%
     * $num(%discnumber%,1)$num(%track%,2) - %title%
     * $num(%discnumber%,1)$num(%track%,2) - %artist% - %title%
- 6. Example:
+ 7. Example:
 ```
 ── 1 Giant Leap
 │   ├── 1 Giant Leap.jpg
@@ -43,6 +50,17 @@ Some of the features included in Jukebox:
 │       └── cover.jpg
 ```
 
+### Todos
+  * Form MARS away from here
+  * Intergrate Grunt.
+  * Integrate Less
+  * Better documentation is required.
+  * Commit unit testing suite
+  * Figure out better UI to navigate, I'm not so sure the about the horizontal scroll, makes some mess in mobile etc.
+  * Player has a major js bug which makes it freeze for some reason after ~10 songs.
+  * Remove drag and drop to the player - useless and casuses more bugs (Done originally with jQuery UI).
+  * Bump all versions to latests (Slim, backbone, loadash, RedBeam, bootstrap)
+  * Integrate all the 3rd parties with node_modules and bower
 
 
 ## What is MARS?
@@ -59,4 +77,4 @@ To learn more about these powerful libraries, check this out:
 * **Frontend/Client Side**: BackBone ([jashkenas/backbone](https://github.com/jashkenas/backbone))
 * **UI**: Bootstrap ([twitter/bootstrap](https://github.com/twitter/bootstrap))
  
-MARS is mainly a wrapper over Slim to make it easier to swtich and contain shared utils that used under the MARS framework.
+MARS is mainly a wrapper over Slim and all the other components to make it easier to swtich and contain shared utils that used under the MARS framework.
