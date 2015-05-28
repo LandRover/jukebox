@@ -30,18 +30,18 @@ Some of the features included in Jukebox:
     * $num(%discnumber%,1)$num(%track%,2) - %title%
     * $num(%discnumber%,1)$num(%track%,2) - %artist% - %title%
  6. Example:
- 7. ```
-── 1 Giant Leap
-│   ├── 1 Giant Leap.jpg
-│   └── What About Me (2009)
-│       ├── 101 - Come To The Edge (Feat. Lila Downs & Huun Huur Tu).mp3
-│       ├── 102 - Each Step Moves Us On (Feat. Zap Mama & Speech).mp3
-│       ├── 103 - How Can I Be A Better Friend To You (Feat. Jhelisa Anderson & Maxi Jazz).mp3
-│       ├── 201 - Under A Stormy Sky  I've Been Away (Feat. Haale, Michael Franti, Maxi Jazz, Eddi Reader & Dan
-│       ├── 202 - What I Need Is Something Different (Feat. Speech & Boots Riley).mp3
-│       ├── 203 - Mothers, Don't Cry (Feat. Miss Honda, Ramata Diakite & Miles Solay).mp3
-│       └── cover.jpg
-```
+   ```
+   ── 1 Giant Leap
+   │   ├── 1 Giant Leap.jpg
+   │   └── What About Me (2009)
+   │       ├── 101 - Come To The Edge (Feat. Lila Downs & Huun Huur Tu).mp3
+   │       ├── 102 - Each Step Moves Us On (Feat. Zap Mama & Speech).mp3
+   │       ├── 103 - How Can I Be A Better Friend To You (Feat. Jhelisa Anderson & Maxi Jazz).mp3
+   │       ├── 201 - Under A Stormy Sky  I've Been Away (Feat. Haale, Michael Franti, Maxi Jazz, Eddi Reader & Dan
+   │       ├── 202 - What I Need Is Something Different (Feat. Speech & Boots Riley).mp3
+   │       ├── 203 - Mothers, Don't Cry (Feat. Miss Honda, Ramata Diakite & Miles Solay).mp3
+   │       └── cover.jpg
+   ```
 
 
 
