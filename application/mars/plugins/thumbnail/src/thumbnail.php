@@ -1,10 +1,10 @@
 <?php
 namespace mars\plugins\thumbnail
 {
-	use \mars\Object;
+    use \mars\Object;
     use \mars\utils\File;
     use \mars\utils\Config;
-	use \mars\Loader;
+    use \mars\Loader;
     
     /**
      * Thumbnail generatore
@@ -20,11 +20,11 @@ namespace mars\plugins\thumbnail
      *                    etc..
      *       currently all over the application the access to the display is direct and all over the place with many sizes.
      */
-	class Thumbnail extends Object
-	{
-		private $config = null;
+    class Thumbnail extends Object
+    {
+        private $config = null;
         
-		private $mimeTypes = array(
+        private $mimeTypes = array(
             'jpg' => 'image/jpeg',
             'jpeg' => 'image/jpeg',
             'gif' => 'image/gif',
@@ -40,10 +40,10 @@ namespace mars\plugins\thumbnail
          * @param int $height
          * @todo add property for center-crop and overall resize flags. 
          */
-		public function display($unixImagePath, $width = 250, $height = 250)
-		{
-			$config = Config::create();
-			
+        public function display($unixImagePath, $width = 250, $height = 250)
+        {
+            $config = Config::create();
+            
             //path for passing params to timbthumb emulating a request params. ugly i know.
             $_GET['src'] = $unixImagePath;
             $_GET['w'] = $width;
@@ -58,8 +58,8 @@ namespace mars\plugins\thumbnail
             define('ALLOW_ALL_EXTERNAL_SITES', false);
 
             //load timthumb 3rd party lib.
-			$path = dirname(dirname(__FILE__)).'/lib/timthumb.php';
-			Loader::create()->load($path);
-		}
-	}
+            $path = dirname(dirname(__FILE__)).'/lib/timthumb.php';
+            Loader::create()->load($path);
+        }
+    }
 }

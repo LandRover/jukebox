@@ -45,62 +45,62 @@ namespace Slim\Extras\Views;
  */
 class Sugar extends \Slim\View
 {
-	/**
-	 * @var string The path to the directory containing the Sugar folder without trailing slash.
-	 */
-	public static $sugarDirectory = null;
+    /**
+     * @var string The path to the directory containing the Sugar folder without trailing slash.
+     */
+    public static $sugarDirectory = null;
 
-	/**
-	 * @var persistent instance of the Smarty object
-	 */
-	private static $sugarInstance = null;
+    /**
+     * @var persistent instance of the Smarty object
+     */
+    private static $sugarInstance = null;
 
-	/**
-	 * @var string The path to the templates folder WITH the trailing slash
-	 */
-	public static $sugarTemplatesDirectory = 'templates/';
+    /**
+     * @var string The path to the templates folder WITH the trailing slash
+     */
+    public static $sugarTemplatesDirectory = 'templates/';
 
-	/**
-	 * @var string The path to the cache folder WITH the trailing slash
-	 */
-	public static $sugarCacheDirectory = null;
+    /**
+     * @var string The path to the cache folder WITH the trailing slash
+     */
+    public static $sugarCacheDirectory = null;
 
-	/**
-	 * Renders a template using Sugar.php.
-	 *
-	 * @see View::render()
-	 * @param string $template The template name specified in Slim::render()
-	 * @return string
-	 */
-	public function render($template)
-	{
-		$sugar = $this->getInstance();
-		$template = $sugar->getTemplate($template);
-		foreach ($this->data as $key => $value) {
-			$template->set($key, $value);
-		}
+    /**
+     * Renders a template using Sugar.php.
+     *
+     * @see View::render()
+     * @param string $template The template name specified in Slim::render()
+     * @return string
+     */
+    public function render($template)
+    {
+        $sugar = $this->getInstance();
+        $template = $sugar->getTemplate($template);
+        foreach ($this->data as $key => $value) {
+            $template->set($key, $value);
+        }
 
-		return $template->fetch();
-	}
+        return $template->fetch();
+    }
 
-	/**
-	 * Creates new Sugar instance if it doesn't already exist, and returns it.
-	 *
+    /**
+     * Creates new Sugar instance if it doesn't already exist, and returns it.
+     *
      * @throws RuntimeException If Sugar lib directory does not exist.
-	 * @return SugarInstance
-	 */
-	private function getInstance()
-	{
-		if (!self::$sugarInstance) {
+     * @return SugarInstance
+     */
+    private function getInstance()
+    {
+        if (!self::$sugarInstance) {
             if (!is_dir(self::$sugarDirectory)) {
                 throw new \RuntimeException('Cannot set the Sugar lib directory : ' . self::$sugarDirectory . '. Directory does not exist.');
             }
-			require_once self::$sugarDirectory . '/Sugar.php';
-			self::$sugarInstance = new \Sugar();
-			self::$sugarInstance->templateDir = self::$sugarTemplatesDirectory;
-			self::$sugarInstance->cacheDir = self::$sugarCacheDirectory;
-		}
+            require_once self::$sugarDirectory . '/Sugar.php';
+            self::$sugarInstance = new \Sugar();
+            self::$sugarInstance->templateDir = self::$sugarTemplatesDirectory;
+            self::$sugarInstance->cacheDir = self::$sugarCacheDirectory;
+        }
 
-		return self::$sugarInstance;
-	}
+        return self::$sugarInstance;
+    }
 }

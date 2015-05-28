@@ -55,7 +55,7 @@ class HttpDigestAuth extends \Slim\Middleware {
     /**
      * Constructor
      *
-     * @param   array	$credentials	An array of usernames and passwords
+     * @param   array   $credentials    An array of usernames and passwords
      * @param   string  $realm      The HTTP Authentication realm
      * @return  void
      */

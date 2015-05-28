@@ -1,8 +1,8 @@
 <?php
 namespace jukebox\controller {
     
-	use \R;
-	use \Exception;
+    use \R;
+    use \Exception;
     use \mars\utils\Event;
     use \mars\controller\Controller;
     use \mars\plugins\slim\SlimWrapper;
@@ -11,8 +11,8 @@ namespace jukebox\controller {
 
     class LoginController extends Controller
     {
-    	public static $MINIMUM_ACCESS_LEVEL = 0; // guest.
-    	
+        public static $MINIMUM_ACCESS_LEVEL = 0; // guest.
+        
         public function init($application)
         {
             parent::init($application);
@@ -27,14 +27,14 @@ namespace jukebox\controller {
 
         public function doLogin()
         {
-        	$stdInput = SlimWrapper::create()->getSlimInstance()->request()->getBody();
-        	$postData = json_decode($stdInput, true);
-        	
-        	$login = $postData['login'];
-        	$password = $postData['password'];
-        	
-        	$validateLogin = AuthenticationController::create()->doLogin($login, $password);
-        	
+            $stdInput = SlimWrapper::create()->getSlimInstance()->request()->getBody();
+            $postData = json_decode($stdInput, true);
+            
+            $login = $postData['login'];
+            $password = $postData['password'];
+            
+            $validateLogin = AuthenticationController::create()->doLogin($login, $password);
+            
             //verify ONLY POST IS SENT!
             $authResponse = array('description' => 'Login Failed, Try again!', 'status' => (null === $validateLogin) ? false : true);
 
@@ -45,8 +45,8 @@ namespace jukebox\controller {
         
         public function doLogout()
         {
-        	$validateLogin = AuthenticationController::create()->doLogout();
-			SlimWrapper::create()->getSlimInstance()->response->redirect('/', 302);
+            $validateLogin = AuthenticationController::create()->doLogout();
+            SlimWrapper::create()->getSlimInstance()->response->redirect('/', 302);
         }
 
     }

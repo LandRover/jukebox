@@ -1,8 +1,8 @@
 <?php
 Class Id3
 {
-	private $_FileReader;
-	private $_ID3Array;
+    private $_FileReader;
+    private $_ID3Array;
     private $_bad_hashID = '8f923b6e1ab957ae7e4d39766cadc48a';
     
     public $ID3Tags = array(
@@ -83,59 +83,59 @@ Class Id3
     );
 
 
-	public function __construct($fileHandle)
-	{
-	    fseek($fileHandle, 0);
-        
-		$this->_FileReader = new BinaryFileReader($fileHandle, array(
-			'ID3' => array(BinaryFileReader::FIXED, 3),
-			'version' => array(BinaryFileReader::FIXED, 2),
-			'flag' => array(BinaryFileReader::FIXED, 1),
-			'sizeTag' => array(BinaryFileReader::FIXED, 4, BinaryFileReader::INT),
-		));
-
-		$this->_FileReader->read();
-	}
-        
-
-	public function readAllTags()
+    public function __construct($fileHandle)
     {
-		$bytesPos = 10; //From headers
+        fseek($fileHandle, 0);
+        
+        $this->_FileReader = new BinaryFileReader($fileHandle, array(
+            'ID3' => array(BinaryFileReader::FIXED, 3),
+            'version' => array(BinaryFileReader::FIXED, 2),
+            'flag' => array(BinaryFileReader::FIXED, 1),
+            'sizeTag' => array(BinaryFileReader::FIXED, 4, BinaryFileReader::INT),
+        ));
 
-		$this->_FileReader->setMap(array(
-			'frameID' => array(BinaryFileReader::FIXED, 4),
-			'size' => array(BinaryFileReader::FIXED, 4, BinaryFileReader::INT),
-			'flag' => array(BinaryFileReader::FIXED, 2),
-			'body' => array(BinaryFileReader::SIZE_OF, 'size')
-		));
+        $this->_FileReader->read();
+    }
+        
 
-		while (($file_data = $this->_FileReader->read()))
-		{
-			if (!in_array($file_data->frameID, array_keys($this->ID3Tags)))
-				break;
-			
+    public function readAllTags()
+    {
+        $bytesPos = 10; //From headers
+
+        $this->_FileReader->setMap(array(
+            'frameID' => array(BinaryFileReader::FIXED, 4),
+            'size' => array(BinaryFileReader::FIXED, 4, BinaryFileReader::INT),
+            'flag' => array(BinaryFileReader::FIXED, 2),
+            'body' => array(BinaryFileReader::SIZE_OF, 'size')
+        ));
+
+        while (($file_data = $this->_FileReader->read()))
+        {
+            if (!in_array($file_data->frameID, array_keys($this->ID3Tags)))
+                break;
+            
             $invalidUTF8 = md5(substr($file_data->body, 0, 3));
             if ($this->_bad_hashID === $invalidUTF8)
             {
                 $file_data->body = substr($file_data->body, 3);
             }
             
-			$this->_ID3Array[$file_data->frameID] = array(
-				 'position' => $bytesPos,
-				 'size' => $file_data->size,
-				 'body' => $file_data->body
-			);
+            $this->_ID3Array[$file_data->frameID] = array(
+                 'position' => $bytesPos,
+                 'size' => $file_data->size,
+                 'body' => $file_data->body
+            );
             
-			$bytesPos += 4 + 4 + 2 + $file_data->size;		
-		}
+            $bytesPos += 4 + 4 + 2 + $file_data->size;      
+        }
 
-		return $this;
-	}
+        return $this;
+    }
     
 
-	public function getID3Array()
+    public function getID3Array()
     {
-		return array(
+        return array(
             'title' => (isset($this->_ID3Array['TIT2'])) ? $this->_ID3Array['TIT2']['body'] : '',
             'artist' => (isset($this->_ID3Array['TPE1'])) ? $this->_ID3Array['TPE1']['body'] : '',
             'album' => (isset($this->_ID3Array['TALB'])) ? $this->_ID3Array['TALB']['body'] : '',
@@ -143,24 +143,24 @@ Class Id3
             'track' => (isset($this->_ID3Array['TRCK'])) ? $this->_ID3Array['TRCK']['body'] : '',
             'genre' => (isset($this->_ID3Array['TCON'])) ? ucfirst(strtolower($this->_ID3Array['TCON']['body'])) : ''
         );
-	}
+    }
         
 
-	public function getImage()
+    public function getImage()
     {
-		$fp = fopen('data://text/plain;base64,'.base64_encode($this->_ID3Array["APIC"]["body"]), 'rb'); //Create an artificial stream from Image data
+        $fp = fopen('data://text/plain;base64,'.base64_encode($this->_ID3Array["APIC"]["body"]), 'rb'); //Create an artificial stream from Image data
 
-		$fileReader = new BinaryFileReader($fp, array(
-			'textEncoding' => array(BinaryFileReader::FIXED, 1),
-			'mimeType' => array(BinaryFileReader::NULL_TERMINATED),
-			'fileName' => array(BinaryFileReader::NULL_TERMINATED),
-			'ContentDesc' => array(BinaryFileReader::NULL_TERMINATED),
-			'binaryData' => array(BinaryFileReader::EOF_TERMINATED))
+        $fileReader = new BinaryFileReader($fp, array(
+            'textEncoding' => array(BinaryFileReader::FIXED, 1),
+            'mimeType' => array(BinaryFileReader::NULL_TERMINATED),
+            'fileName' => array(BinaryFileReader::NULL_TERMINATED),
+            'ContentDesc' => array(BinaryFileReader::NULL_TERMINATED),
+            'binaryData' => array(BinaryFileReader::EOF_TERMINATED))
         );
-		
-		$imageData = $fileReader->read();
+        
+        $imageData = $fileReader->read();
 
-		return array($imageData->mimeType, $imageData->binaryData);
-	}
+        return array($imageData->mimeType, $imageData->binaryData);
+    }
 
 }

@@ -46,39 +46,39 @@ namespace Slim\Extras\Views;
  */
 class Haml extends \Slim\View
 {
-	/**
-	 * @var string The path to the directory containing the "HamlPHP" folder without trailing slash.
-	 */
-	public static $hamlDirectory = null;
+    /**
+     * @var string The path to the directory containing the "HamlPHP" folder without trailing slash.
+     */
+    public static $hamlDirectory = null;
 
-	/**
-	 * @var string The path to the templates folder WITH the trailing slash
-	 */
-	public static $hamlTemplatesDirectory = 'templates/';
+    /**
+     * @var string The path to the templates folder WITH the trailing slash
+     */
+    public static $hamlTemplatesDirectory = 'templates/';
 
-	/**
-	 * @var string The path to the templates folder WITH the trailing slash
-	 */
-	public static $hamlCacheDirectory = null;
+    /**
+     * @var string The path to the templates folder WITH the trailing slash
+     */
+    public static $hamlCacheDirectory = null;
 
-	/**
-	 * Renders a template using Haml.php.
-	 *
-	 * @see View::render()
+    /**
+     * Renders a template using Haml.php.
+     *
+     * @see View::render()
      * @throws RuntimeException If Haml lib directory does not exist.
-	 * @param string $template The template name specified in Slim::render()
-	 * @return string
-	 */
-	public function render($template)
-	{
+     * @param string $template The template name specified in Slim::render()
+     * @return string
+     */
+    public function render($template)
+    {
         if (!is_dir(self::$hamlDirectory)) {
             throw new \RuntimeException('Cannot set the HamlPHP lib directory : ' . self::$hamlDirectory . '. Directory does not exist.');
         }
-		require_once self::$hamlDirectory . '/HamlPHP/HamlPHP.php';
-		require_once self::$hamlDirectory . '/HamlPHP/Storage/FileStorage.php';
-		$parser = new \HamlPHP(new \FileStorage(self::$hamlCacheDirectory));
+        require_once self::$hamlDirectory . '/HamlPHP/HamlPHP.php';
+        require_once self::$hamlDirectory . '/HamlPHP/Storage/FileStorage.php';
+        $parser = new \HamlPHP(new \FileStorage(self::$hamlCacheDirectory));
 
-		$file = $parser->parseFile(self::$hamlTemplatesDirectory . $template);
-		return $parser->evaluate($file, $this->data);
-	}
+        $file = $parser->parseFile(self::$hamlTemplatesDirectory . $template);
+        return $parser->evaluate($file, $this->data);
+    }
 }

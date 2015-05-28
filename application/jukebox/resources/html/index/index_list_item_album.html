@@ -1,23 +1,23 @@
 <div class="item-info-bit album">
-	<a href="#/album/<%- model.get('artist') %>/<%- model.get('name') %>">
-		<img src="/stream/thumbnail/<%- thumbnailSize %>/album/<%- model.get('path') %>.jpg" alt="<%- model.get('name') %>" />
-		<em><i>&nbsp;</i></em>
-	</a>
+    <a href="#/album/<%- model.get('artist') %>/<%- model.get('name') %>">
+        <img src="/stream/thumbnail/<%- thumbnailSize %>/album/<%- model.get('path') %>.jpg" alt="<%- model.get('name') %>" />
+        <em><i>&nbsp;</i></em>
+    </a>
     <div class="actions">
-		<button type="button" class="btn btn-default btn-sm btn-play">
-			<span class="glyphicon glyphicon-play"></span>
-		</button>
+        <button type="button" class="btn btn-default btn-sm btn-play">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
     </div>
-	
-	<div class="item-title">
-		<h6 class="<%- category %>"><%- category %></h6><h6 class="<%- type %>"><%- type %></h6>
+    
+    <div class="item-title">
+        <h6 class="<%- category %>"><%- category %></h6><h6 class="<%- type %>"><%- type %></h6>
         <h2><a href="#/album/<%- model.get('artist') %>/<%- model.get('name') %>"><%- model.get('name') %></a></h2>
     </div>
     
     <div class="item-details">
-    	<ul>
-    		<li><span class="glyphicon glyphicon-calendar"></span> <span class="year"><%- model.get('year') %></span></li>
-			<li><span class="glyphicon glyphicon-map-marker"></span> <span class="count_songs"><%- model.get('count_songs') %></span></li>
-		</ul>
-	</div>
+        <ul>
+            <li><span class="glyphicon glyphicon-calendar"></span> <span class="year"><%- model.get('year') %></span></li>
+            <li><span class="glyphicon glyphicon-map-marker"></span> <span class="count_songs"><%- model.get('count_songs') %></span></li>
+        </ul>
+    </div>
 </div>

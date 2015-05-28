@@ -1,15 +1,15 @@
 <?php
 namespace mars\utils\spl
 {
-	use \SplHeap;
-	
-	/**
-	 * This class handles a spl extras
+    use \SplHeap;
+    
+    /**
+     * This class handles a spl extras
      * 
      * @todo write proper documentation
-	 */
-	class SortedIterator extends SplHeap
-	{
+     */
+    class SortedIterator extends SplHeap
+    {
         public function __construct($iterator)
         {
             foreach ($iterator as $item)
@@ -23,5 +23,5 @@ namespace mars\utils\spl
         {
             return strcmp($a->getRealpath(), $b->getRealpath());
         }
-	}
+    }
 }

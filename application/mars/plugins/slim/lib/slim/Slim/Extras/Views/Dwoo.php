@@ -44,51 +44,51 @@ namespace Slim\Extras\Views;
  */
 class Dwoo extends \Slim\View
 {
-	/**
-	 * @var string The path to the directory containing the Dwoo folder without trailing slash.
-	 */
-	public static $dwooDirectory = null;
+    /**
+     * @var string The path to the directory containing the Dwoo folder without trailing slash.
+     */
+    public static $dwooDirectory = null;
 
-	/**
-	 * @var persistent instance of the Smarty object
-	 */
-	private static $dwooInstance = null;
+    /**
+     * @var persistent instance of the Smarty object
+     */
+    private static $dwooInstance = null;
 
-	/**
-	 * @var string The path to the templates folder WITH the trailing slash
-	 */
-	public static $dwooTemplatesDirectory = 'templates';
+    /**
+     * @var string The path to the templates folder WITH the trailing slash
+     */
+    public static $dwooTemplatesDirectory = 'templates';
 
-	/**
-	 * Renders a template using Dwoo.php.
-	 *
-	 * @see View::render()
-	 * @param string $template The template name specified in Slim::render()
-	 * @return string
-	 */
-	public function render($template)
-	{
-		$dwoo = $this->getInstance();
+    /**
+     * Renders a template using Dwoo.php.
+     *
+     * @see View::render()
+     * @param string $template The template name specified in Slim::render()
+     * @return string
+     */
+    public function render($template)
+    {
+        $dwoo = $this->getInstance();
 
-		return $dwoo->get(self::$dwooTemplatesDirectory.$template, $this->data);
-	}
+        return $dwoo->get(self::$dwooTemplatesDirectory.$template, $this->data);
+    }
 
-	/**
-	 * Creates new Dwoo instance if it doesn't already exist, and returns it.
-	 *
+    /**
+     * Creates new Dwoo instance if it doesn't already exist, and returns it.
+     *
      * @throws RuntimeException If Dwoo lib directory does not exist.
-	 * @return DwooInstance
-	 */
-	private function getInstance()
-	{
-		if (!self::$dwooInstance) {
+     * @return DwooInstance
+     */
+    private function getInstance()
+    {
+        if (!self::$dwooInstance) {
             if (!is_dir(self::$dwooDirectory)) {
                 throw new \RuntimeException('Cannot set the Dwoo lib directory : ' . self::$dwooDirectory . '. Directory does not exist.');
             }
-			require_once self::$dwooDirectory . '/dwooAutoload.php';
-			self::$dwooInstance = new \Dwoo();
-		}
+            require_once self::$dwooDirectory . '/dwooAutoload.php';
+            self::$dwooInstance = new \Dwoo();
+        }
 
-		return self::$dwooInstance;
-	}
+        return self::$dwooInstance;
+    }
 }

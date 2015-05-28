@@ -20,7 +20,7 @@ class Smarty_Internal_Configfilelexer
     public $node;
     public $line;
     private $state = 1;
-    public $smarty_token_names = array (		// Text for parser error messages
+    public $smarty_token_names = array (        // Text for parser error messages
                    );
 
     public function __construct($data, $smarty)

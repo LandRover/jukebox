@@ -15,8 +15,8 @@ namespace jukebox\controller {
      */
     class ImportController extends Controller
     {
-    	public static $MINIMUM_ACCESS_LEVEL = 0; // TODO: change - CLI should be access level 99 be default, after the change remove this var..
-    	
+        public static $MINIMUM_ACCESS_LEVEL = 0; // TODO: change - CLI should be access level 99 be default, after the change remove this var..
+        
         private $config = null;
         private $counterSongs = 0;
         private $invalidChars = array(
@@ -25,13 +25,13 @@ namespace jukebox\controller {
             ''); //@TODO: LOG INVALID NAMES!
 
         private $prefixList = array(
-        	'hidden' => array(
-				'@'
-			),
-        	'special' => array(
-				'#'
-			)
-  		);
+            'hidden' => array(
+                '@'
+            ),
+            'special' => array(
+                '#'
+            )
+        );
             
         
         public function init($application)
@@ -58,22 +58,22 @@ namespace jukebox\controller {
 
             $dir = File::create($this->getPathList());
             foreach ($dir->readdir() as $artistName)
-			{
+            {
                 $this->output('-', 'Artist: "'. $artistName .'" Scan Begins');
-				// structure artist and 2 albums
+                // structure artist and 2 albums
                 $artist = R::findOne('artist', ' name = :name', array(':name' => $artistName));
 
                 //artist not found - add new.
                 if (is_null($artist))
-				{
-                	$this->output('X', 'Artist: "'. $artistName .'". Adding.');
-                	
+                {
+                    $this->output('X', 'Artist: "'. $artistName .'". Adding.');
+                    
                     $artist = R::dispense('artist');
                     $artist->name = $artistName;
                     $artist->votes = 0;
                     $artist->is_featured = false;
                 } else {
-                	$this->output('V', 'Artist: "'. $artistName .'". Updating.');
+                    $this->output('V', 'Artist: "'. $artistName .'". Updating.');
                 }
 
                 R::store($artist);
@@ -95,14 +95,14 @@ namespace jukebox\controller {
             
             $albumsAdd = array();
             foreach ($albumsList as $albumDirName) {
-            	$firstChar = String::create($albumDirName);
-            	if (in_array($firstChar->firstChar(), $this->prefixList['hidden'])) {
-            		$this->output('SKIP', $albumDirName .' Matched an invalid array for prefix.');
-            		continue;
-            	}
-            	
-            	$this->output('-', $artist->name.' Scanning album "'. $albumDirName .'"...');
-            	
+                $firstChar = String::create($albumDirName);
+                if (in_array($firstChar->firstChar(), $this->prefixList['hidden'])) {
+                    $this->output('SKIP', $albumDirName .' Matched an invalid array for prefix.');
+                    continue;
+                }
+                
+                $this->output('-', $artist->name.' Scanning album "'. $albumDirName .'"...');
+                
                 $dirInfo = $this->_parseAlbumName($albumDirName);
 
                 $album = R::findOne('album', ' name = :name AND artist_id = :artist_id', array(':name' =>
@@ -110,9 +110,9 @@ namespace jukebox\controller {
 
                 // album not found - ADD.
                 if (is_null($album))
-				{
-					$this->output('X', $artist->name.' Album: "'. $dirInfo['name'] .'". Adding.');
-					
+                {
+                    $this->output('X', $artist->name.' Album: "'. $dirInfo['name'] .'". Adding.');
+                    
                     $album = R::dispense('album');
                     $album->path = $artist->name .'/'. $albumDirName;
                     $album->name = $dirInfo['name'];
@@ -122,8 +122,8 @@ namespace jukebox\controller {
                     $album->count_plays_album = 0;
                     //$artist->link($album);
                 } else {
-	            	$this->output('V', $artist->name.' Album: "'. $albumDirName .'". Updating.');
-	            }
+                    $this->output('V', $artist->name.' Album: "'. $albumDirName .'". Updating.');
+                }
 
                 $albumsAdd[] = $album;
             }
@@ -146,12 +146,12 @@ namespace jukebox\controller {
             $albumsDir = File::create($this->getPathList($artist->name));
             
             foreach ($albumsDir->readdir() as $albumDirName) {
-            	$firstChar = String::create($albumDirName);
-            	if (in_array($firstChar->firstChar(), $this->prefixList['hidden'])) {
-            		$this->output('SKIP', $albumDirName .' Matched an invalid array for prefix.');
-            		continue;
-            	}
-            	
+                $firstChar = String::create($albumDirName);
+                if (in_array($firstChar->firstChar(), $this->prefixList['hidden'])) {
+                    $this->output('SKIP', $albumDirName .' Matched an invalid array for prefix.');
+                    continue;
+                }
+                
                 $album = R::findOne('album', ' path = :path AND artist_id = :artist_id', array(':path' =>
                         $artist->name . '/' . $albumDirName, ':artist_id' => $artist->id));
 
@@ -162,8 +162,8 @@ namespace jukebox\controller {
 
                 $songsAdd = array();
                 foreach ($songsList as $songFileName) {
-                	
-                	//$this->output('DEBUG', $albumDirName.', Song: "'. $songFileName .'". DEBUG.');
+                    
+                    //$this->output('DEBUG', $albumDirName.', Song: "'. $songFileName .'". DEBUG.');
                     $fileInfo = $this->_parseSongName($songFileName);
 
                     $song = R::findOne('song',
@@ -200,8 +200,8 @@ namespace jukebox\controller {
                         $song->album_id = $album->id;
                         $song->artist_id = $artist->id;
                     } else {
-		            	$this->output('V', $albumDirName.' Song: "'. $song->path .'". Updating.');
-		            }
+                        $this->output('V', $albumDirName.' Song: "'. $song->path .'". Updating.');
+                    }
 
                     $songsAdd[] = $song;
 
@@ -265,9 +265,9 @@ namespace jukebox\controller {
          * 
          */
         private function output($flag, $text)
-		{
-        	echo '['.$flag.'] '.$text. "\n";
-        	ob_flush();
+        {
+            echo '['.$flag.'] '.$text. "\n";
+            ob_flush();
         }
     }
 }

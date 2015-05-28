@@ -1,18 +1,18 @@
 <?php
 namespace mars\plugins\mysql
 {
-	use \R;
+    use \R;
     use \RedBean_ModelHelper;
-	use \mars\MARS;
-	use \mars\Object;
-	use \mars\Loader;
-	use \mars\utils\Config;
-	use \mars\plugins\mysql\utils\QueryLogger;
+    use \mars\MARS;
+    use \mars\Object;
+    use \mars\Loader;
+    use \mars\utils\Config;
+    use \mars\plugins\mysql\utils\QueryLogger;
     use \mars\plugins\mysql\utils\NamespaceFormatter;
     
-	// load redbeam library
-	$path = dirname(dirname(__FILE__)).'/lib/redbeam/rb.php';
-	Loader::create()->load($path);
+    // load redbeam library
+    $path = dirname(dirname(__FILE__)).'/lib/redbeam/rb.php';
+    Loader::create()->load($path);
     
     /**
      * Mysql plugin is a wrapper over the connection for MySQL
@@ -23,47 +23,47 @@ namespace mars\plugins\mysql
      * 
      * @todo all over the code still direct access to R:: exists, encapsulation is required
      */
-	class Mysql extends Object
-	{
-		static protected $instance;
-		private $config = null;
-		
-		/**
-		 * Creation function, implementes singleton as a single focal point for mysql access.
-         * 
-		 * @return \mars\plugins\mysql\Mysql
-		 */
-		static public function create()
-		{
-			if (is_null(self::$instance))
-			{
-				self::$instance = parent::create();
-			}
-            
-			return self::$instance;
-		}
-		
+    class Mysql extends Object
+    {
+        static protected $instance;
+        private $config = null;
         
-		/**
+        /**
+         * Creation function, implementes singleton as a single focal point for mysql access.
+         * 
+         * @return \mars\plugins\mysql\Mysql
+         */
+        static public function create()
+        {
+            if (is_null(self::$instance))
+            {
+                self::$instance = parent::create();
+            }
+            
+            return self::$instance;
+        }
+        
+        
+        /**
          * Cosntructor function, creates the connection to the DB and sets model format.
          * Connection is esstablished via RedBeam 
          */
-		public function init()
-		{
-			$this->config = Config::create();
-			$mysql = $this->config->read('mysql');
-			
-			R::setup(
-			    'mysql:host='. $mysql['host'] .'; dbname='. $mysql['dbname'],
-			    $mysql['user'],
-			    $mysql['pass']
-			);
-			
-			//$this->queryLogger();
+        public function init()
+        {
+            $this->config = Config::create();
+            $mysql = $this->config->read('mysql');
+            
+            R::setup(
+                'mysql:host='. $mysql['host'] .'; dbname='. $mysql['dbname'],
+                $mysql['user'],
+                $mysql['pass']
+            );
+            
+            //$this->queryLogger();
             //$this->setDebugMode();
-			$this->setModelFormat();
+            $this->setModelFormat();
             //R::freeze(true);
-		}
+        }
         
         
         /**
@@ -82,8 +82,8 @@ namespace mars\plugins\mysql
          * Param is controlled via the config
          */
         private function setDebugMode()
-		{
-        	return R::debug($this->config->read('debug'));
+        {
+            return R::debug($this->config->read('debug'));
         }
         
         
@@ -94,15 +94,15 @@ namespace mars\plugins\mysql
          */
         private function queryLogger()
         {
-			$queryLogger = \RedBean_Plugin_QueryLogger::getInstanceAndAttach(
-				R::getDatabaseAdapter()
-			);
-			
-			$databaseAdapter = R::getDatabaseAdapter();
-			
-			$databaseAdapter->addEventListener('sql_exec', new QueryLogger);
-			
-			return $queryLogger;
+            $queryLogger = \RedBean_Plugin_QueryLogger::getInstanceAndAttach(
+                R::getDatabaseAdapter()
+            );
+            
+            $databaseAdapter = R::getDatabaseAdapter();
+            
+            $databaseAdapter->addEventListener('sql_exec', new QueryLogger);
+            
+            return $queryLogger;
         }
-	}
+    }
 }

@@ -45,59 +45,59 @@ namespace Slim\Extras\Views;
  */
 class Rain extends \Slim\View
 {
-	/**
-	 * @var string The path to the directory containing "rain.tpl.class.php" without trailing slash.
-	 */
-	public static $rainDirectory = null;
+    /**
+     * @var string The path to the directory containing "rain.tpl.class.php" without trailing slash.
+     */
+    public static $rainDirectory = null;
 
-	/**
-	 * @var persistent instance of the Smarty object
-	 */
-	private static $rainInstance = null;
+    /**
+     * @var persistent instance of the Smarty object
+     */
+    private static $rainInstance = null;
 
-	/**
-	 * @var string The path to the templates folder WITH the trailing slash
-	 */
-	public static $rainTemplatesDirectory = 'templates/';
+    /**
+     * @var string The path to the templates folder WITH the trailing slash
+     */
+    public static $rainTemplatesDirectory = 'templates/';
 
-	/**
-	 * @var string The path to the cache folder WITH the trailing slash
-	 */
-	public static $rainCacheDirectory = null;
+    /**
+     * @var string The path to the cache folder WITH the trailing slash
+     */
+    public static $rainCacheDirectory = null;
 
-	/**
-	 * Renders a template using Rain.php.
-	 *
-	 * @see View::render()
-	 * @param string $template The template name specified in Slim::render()
-	 * @return string
-	 */
-	public function render($template)
-	{
-		$rain = $this->getInstance();
-		$rain->assign($this->data);
+    /**
+     * Renders a template using Rain.php.
+     *
+     * @see View::render()
+     * @param string $template The template name specified in Slim::render()
+     * @return string
+     */
+    public function render($template)
+    {
+        $rain = $this->getInstance();
+        $rain->assign($this->data);
 
-		return $rain->draw($template, $return_string = true);
-	}
+        return $rain->draw($template, $return_string = true);
+    }
 
-	/**
-	 * Creates new Rain instance if it doesn't already exist, and returns it.
-	 *
+    /**
+     * Creates new Rain instance if it doesn't already exist, and returns it.
+     *
      * @throws RuntimeException If Rain lib directory does not exist.
-	 * @return RainInstance
-	 */
-	private function getInstance()
-	{
-		if (!self::$rainInstance) {
+     * @return RainInstance
+     */
+    private function getInstance()
+    {
+        if (!self::$rainInstance) {
             if (!is_dir(self::$rainDirectory)) {
                 throw new \RuntimeException('Cannot set the Rain lib directory : ' . self::$rainDirectory . '. Directory does not exist.');
             }
-			require_once self::$rainDirectory . '/rain.tpl.class.php';
-			\raintpl::$tpl_dir = self::$rainTemplatesDirectory;
-			\raintpl::$cache_dir = self::$rainCacheDirectory;
-			self::$rainInstance = new \raintpl();
-		}
+            require_once self::$rainDirectory . '/rain.tpl.class.php';
+            \raintpl::$tpl_dir = self::$rainTemplatesDirectory;
+            \raintpl::$cache_dir = self::$rainCacheDirectory;
+            self::$rainInstance = new \raintpl();
+        }
 
-		return self::$rainInstance;
-	}
+        return self::$rainInstance;
+    }
 }

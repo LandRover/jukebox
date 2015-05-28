@@ -1,9 +1,9 @@
 <?php
 class Waveform {
-	const BYTE = 8;
-	const OFFSET = 44;
-	const LAME_BIN = '/usr/local/bin/lame';
-	
+    const BYTE = 8;
+    const OFFSET = 44;
+    const LAME_BIN = '/usr/local/bin/lame';
+    
     private $file = null;
     private $accuracy = 100;
     private $spectrumData = array();
@@ -16,13 +16,13 @@ class Waveform {
     
     
     public function __construct($tmpDir) {
-		ini_set('max_execution_time', '30000');
-		
-		/*
-		$wave = new Waveform('/home/meru/domains/m.full-on.com/public_html/_wave/_tmp/');
-		$wave->setFile('/home/meru/domains/m.full-on.com/public_html/_wave/song_sample5.mp3')
-			 ->png(2340, 280, false, '#aa0000');
-		*/
+        ini_set('max_execution_time', '30000');
+        
+        /*
+        $wave = new Waveform('/home/meru/domains/m.full-on.com/public_html/_wave/_tmp/');
+        $wave->setFile('/home/meru/domains/m.full-on.com/public_html/_wave/song_sample5.mp3')
+             ->png(2340, 280, false, '#aa0000');
+        */
         $this->setTmpDir($tmpDir);
     }
     
@@ -31,7 +31,7 @@ class Waveform {
         $this->file = $file;
         
         if ('wav' !== $this->getExt($file))
-        	$this->file = $this->getConvertedWav();
+            $this->file = $this->getConvertedWav();
         
         return $this;
     }
@@ -56,7 +56,7 @@ class Waveform {
     
     public function setColorBackground($colorBackground) {
         $this->colorBackground = $this->getRGBArray($colorBackground);
-		 
+         
         return $this;
     }
     
@@ -103,14 +103,14 @@ class Waveform {
     
     
     private function getRGBArray($rgb) {
-    	if (is_null($rgb)) return $rgb;
-		
-		return $this->html2rgb($rgb);
+        if (is_null($rgb)) return $rgb;
+        
+        return $this->html2rgb($rgb);
     }
     
     
     private function read() {
-		$handle = fopen($this->getFile(), 'rb');
+        $handle = fopen($this->getFile(), 'rb');
         
         if (!$handle) {
             die('no file handle');
@@ -148,9 +148,9 @@ class Waveform {
         
         $fileChunks = ($fileSize - self::OFFSET) / $chunkSize;
         if ($fileChunks < $this->getWidth()) { 
-        	$this->setWidth($fileChunks);
-		}
-		
+            $this->setWidth($fileChunks);
+        }
+        
         $accuracy = ($fileChunks < $this->getWidth() * $this->getAccuracy()) ? 1 : $this->getAccuracy();
         $blockChunks = $fileChunks / ($this->getWidth() * $accuracy);
         
@@ -168,14 +168,14 @@ class Waveform {
             // Read the next block, take the first value (of the first channel)
             $realPositionDiff = @(($currentFilePosition - self::OFFSET) % $chunkSize);
             if ($realPositionDiff > ($chunkSize / 2))
-				$realPositionDiff -= $chunkSize;
-			
+                $realPositionDiff -= $chunkSize;
+            
             fseek($handle, $currentFilePosition - $realPositionDiff);
             $chunk = fread($handle, $chunkSize);
             
             //empty stream after read.. end of file usually.
-			if (feof($handle) && !strlen($chunk)) 
-				break;
+            if (feof($handle) && !strlen($chunk)) 
+                break;
             
             $currentFilePosition += $blockChunks * $chunkSize;
             
@@ -209,15 +209,15 @@ class Waveform {
     public function png($width, $height, $isFullView = true, $background = null, $foreground) {
         $heightMultiplier = (true === $isFullView) ? 1 : 2;
 
-		$this->setWidth($width)
-			 ->setHeight($height)
-			 ->setColorForeground($foreground)
-			 ->setColorBackground($background);
-		
-		$canvas = $this->getCanvas();
-		$foreground = $this->getColorForeground();
-		$spectrumData = $this->getSpectrumData();
-		
+        $this->setWidth($width)
+             ->setHeight($height)
+             ->setColorForeground($foreground)
+             ->setColorBackground($background);
+        
+        $canvas = $this->getCanvas();
+        $foreground = $this->getColorForeground();
+        $spectrumData = $this->getSpectrumData();
+        
         foreach ($spectrumData as $x => $lineHeight) {
             $y1 = (0 + ($this->getHeight() - $lineHeight)) * $heightMultiplier;
             $y2 = ($this->getHeight() - ($this->getHeight() - $lineHeight)) * $heightMultiplier;
@@ -225,14 +225,14 @@ class Waveform {
             $lineColor = imagecolorallocate($canvas, $foreground['r'], $foreground['g'], $foreground['b']);
             
             // draw the line on the image using the $v value and centering it vertically on the canvas
-        	imageline($canvas, $x, $y1, $x, $y2, $lineColor);
+            imageline($canvas, $x, $y1, $x, $y2, $lineColor);
         }
         
         header('Content-Type: image/png');
         
         ob_start();
         ob_clean();
-		imagepng($canvas);
+        imagepng($canvas);
         
         $image = ob_get_contents();
         
@@ -245,7 +245,7 @@ class Waveform {
     
     
     private function getCanvas() {
-    	$background = $this->getColorBackground();
+        $background = $this->getColorBackground();
         
         // create original image width based on amount of detail
         // each waveform to be processed with be $height high, but will be condensed
@@ -254,13 +254,13 @@ class Waveform {
         
         // fill background of image
         if (is_null($background)) {
-			// transparent background specified
-			imagesavealpha($canvas, true);
-			$transparentBgColor = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
-			imagefill($canvas, 0, 0, $transparentBgColor);
+            // transparent background specified
+            imagesavealpha($canvas, true);
+            $transparentBgColor = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
+            imagefill($canvas, 0, 0, $transparentBgColor);
         } else {
-        	$bgFill = imagecolorallocate($canvas, $background['r'], $background['g'], $background['b']);
-			imagefilledrectangle($canvas, 0, 0, $this->getWidth(), $this->getHeight(), $bgFill);
+            $bgFill = imagecolorallocate($canvas, $background['r'], $background['g'], $background['b']);
+            imagefilledrectangle($canvas, 0, 0, $this->getWidth(), $this->getHeight(), $bgFill);
         }
         
         return $canvas;
@@ -268,11 +268,11 @@ class Waveform {
     
     
     private function getSpectrumData() {
-    	if (0 === sizeof($this->spectrumData)) {
-    		$this->read();
-    	}
-    	
-    	return $this->spectrumData;
+        if (0 === sizeof($this->spectrumData)) {
+            $this->read();
+        }
+        
+        return $this->spectrumData;
     }
     
     
@@ -289,7 +289,7 @@ class Waveform {
     
     private function getTmpFilename() {
         if (is_null($this->tmpFilename))
-			$this->tmpFilename = substr(md5(time()), 0, 10);
+            $this->tmpFilename = substr(md5(time()), 0, 10);
         
         return $this->tmpFilename;
     }
@@ -305,43 +305,43 @@ class Waveform {
         list($r, $g, $b) = array_map('hexdec', str_split($hexColor, 2));
         
         return array(
-			'r' => $r,
-			'g' => $g,
-			'b' => $b
-		);
+            'r' => $r,
+            'g' => $g,
+            'b' => $b
+        );
     }
     
     
     private function getExt($file) {
-    	return end(explode('.', $file));
+        return end(explode('.', $file));
     }
     
     
-	private function getTmpFilePath() {
-    	return $this->getTmpDir().$this->getTmpFilename();
+    private function getTmpFilePath() {
+        return $this->getTmpDir().$this->getTmpFilename();
     }
     
     
     private function getConvertedWav() {
-    	$tmpFilePath = $this->getTmpFilePath();
-    	$wav = $tmpFilePath .'.wav';
-    	$mp3 = $tmpFilePath .'.mp3';
-    	
-    	if (!file_exists($wav)) {
-	    	$convertTypeToMp3_8bit = self::LAME_BIN .' "'.$this->getFile().'" -m m -S -f -b 16 --resample 8 '.$mp3;
-	    	$convertMp3ToWav = self::LAME_BIN .' -S --decode '. $mp3 .' '. $wav;
-	    	
-	    	exec($convertTypeToMp3_8bit .' && '. $convertMp3ToWav);
-	    	
-			//remove resampling to 8bit, useless from this point..
-			@unlink($mp3);
-    	}
-    	
-    	return $wav;
+        $tmpFilePath = $this->getTmpFilePath();
+        $wav = $tmpFilePath .'.wav';
+        $mp3 = $tmpFilePath .'.mp3';
+        
+        if (!file_exists($wav)) {
+            $convertTypeToMp3_8bit = self::LAME_BIN .' "'.$this->getFile().'" -m m -S -f -b 16 --resample 8 '.$mp3;
+            $convertMp3ToWav = self::LAME_BIN .' -S --decode '. $mp3 .' '. $wav;
+            
+            exec($convertTypeToMp3_8bit .' && '. $convertMp3ToWav);
+            
+            //remove resampling to 8bit, useless from this point..
+            @unlink($mp3);
+        }
+        
+        return $wav;
     }
     
     
     public function tearDown() {
-    	@unlink($this->getTmpFilePath() .'.wav');
+        @unlink($this->getTmpFilePath() .'.wav');
     }
 }

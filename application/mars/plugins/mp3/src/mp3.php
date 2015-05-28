@@ -4,21 +4,21 @@ namespace mars\plugins\mp3
     use \Id3;
     use \mp3Meta;
     use \mars\MARS;
-	use \mars\Object;
-	use \mars\Loader;
-	use \mars\utils\Config;
+    use \mars\Object;
+    use \mars\Loader;
+    use \mars\utils\Config;
     
-	// load 3rd party modules for handling id3 tags for mp3 files
-	$path = dirname(dirname(__FILE__)).'/lib/id3/id3.php';
-	Loader::create()->load($path);
+    // load 3rd party modules for handling id3 tags for mp3 files
+    $path = dirname(dirname(__FILE__)).'/lib/id3/id3.php';
+    Loader::create()->load($path);
     
     $path = dirname(dirname(__FILE__)).'/lib/binary_file_reader/binary_file_reader.php';
-	Loader::create()->load($path);
+    Loader::create()->load($path);
     
-	$path = dirname(dirname(__FILE__)).'/lib/mp3_meta/mp3_meta.php';
-	Loader::create()->load($path);
+    $path = dirname(dirname(__FILE__)).'/lib/mp3_meta/mp3_meta.php';
+    Loader::create()->load($path);
 
-	class Mp3 extends Object
+    class Mp3 extends Object
     {
         public $file = null;
         
@@ -28,9 +28,9 @@ namespace mars\plugins\mp3
          * @param string $file
          */
         public function init($file)
-		{
+        {
             $this->file = $file;
-		}
+        }
         
         
         /**
@@ -59,5 +59,5 @@ namespace mars\plugins\mp3
             );
         }
         
-	}
+    }
 }

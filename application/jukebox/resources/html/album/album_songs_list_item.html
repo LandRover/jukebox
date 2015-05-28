@@ -1,22 +1,22 @@
 <div class="widget-item">
-	<div class="action">
-	    <span class="song-trackid"><% if (1 === song.get('track_id').length) { %>0<% } %><%- song.get('track_id') %></span>
-	    
-		<button type="button" class="btn btn-default btn-xs">
-			<span class="glyphicon glyphicon-play"></span>
-		</button>
-	</div>
-	
-	<span class="song-name"><%- song.get('name') %></span>
-	<span class="song-length">&nbsp;</span>
-	
-	<div class="actions">
-	    <ul>
-	        <li class="add">
-	        	<button type="button" class="btn btn-default btn-xs">
-	        		<span class="glyphicon glyphicon-plus"></span>
-	        	</button>
-	        </li>
-	    </ul>
-	</div>
+    <div class="action">
+        <span class="song-trackid"><% if (1 === song.get('track_id').length) { %>0<% } %><%- song.get('track_id') %></span>
+        
+        <button type="button" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+    </div>
+    
+    <span class="song-name"><%- song.get('name') %></span>
+    <span class="song-length">&nbsp;</span>
+    
+    <div class="actions">
+        <ul>
+            <li class="add">
+                <button type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
 </div>
