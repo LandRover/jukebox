@@ -1,0 +1,16 @@
+<%
+	$(el).attr({
+		'data-artist': JSON.stringify({id: model.artist_id, title: model.path_bits[0]}),
+		'data-album': JSON.stringify({id: model.album_id, title: model.path_bits[1].slice(0, -7)}),
+		'data-song': JSON.stringify({id: model.id, title: model.name}),
+		'data-thumb': '/stream/thumbnail/small/album/'+ model.path_bits[0] +'/'+ model.path_bits[1] +'.jpg'
+	});
+%>
+<em>
+	<figure>
+		<img src="<%- $(el).data('thumb') %>" alt=""/>
+	</figure>
+</em>
+<h4><%- model.name %></h4>
+<strong><%- model.path_bits[0] %> - <%- model.path_bits[1] %></strong>
+<div class="widget-action play"></div>

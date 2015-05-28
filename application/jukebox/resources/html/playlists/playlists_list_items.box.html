@@ -1,0 +1,16 @@
+<div class="playlists-info-bit">
+	<img src="/stream/thumbnail/small/playlist/<%- playlist.get('id') %>/<%- playlist.get('name').replace(' ', '+') %>.jpg" alt="<%- playlist.get('name') %>" />
+    <div class="actions play">
+        <a href="javascript:;"><i>Play</i></a>
+    </div>
+    
+    <div class="actions remove">
+        <a href="javascript:;"><i>Remove</i></a>
+    </div>
+	
+	<div class="details">
+        <span><i>&nbsp;</i></span>
+		<h5><%- playlist.get('name') %> (<%- playlist.get('songs_count') %>)</h5>
+		<em>By OG</em>
+    </div>
+</div>

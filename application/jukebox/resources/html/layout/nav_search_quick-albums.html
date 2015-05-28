@@ -1,0 +1,16 @@
+<%
+	$(el).attr({
+		'data-artist': JSON.stringify({id: model.artist_id, title: model.path_bits[0]}),
+		'data-album': JSON.stringify({id: model.album_id, title: model.name}),
+		'data-song': JSON.stringify({id: null, title: ''}),
+		'data-thumb': '/stream/thumbnail/small/album/'+ model.path +'.jpg'
+	});
+%>
+<em>
+	<figure>
+		<img src="/stream/thumbnail/small/album/<%- model.path %>.jpg" alt=""/>
+	</figure>
+</em>
+<h4><%- model.name %></h4>
+<strong><%- model.path_bits[0] %></strong>
+<div class="widget-action play"></div>

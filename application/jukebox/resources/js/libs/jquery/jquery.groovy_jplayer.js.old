@@ -1,0 +1,319 @@
+/*!
+	jQuery Groovy Jplayer Wrapper plugin
+	@name jquery.groovy_jplayer.js
+	@author Oleg Glozman (oleg.glozman@gmail.com)
+	@version v0.2
+	@date 09/11/2013
+	@category jQuery plugin
+	@copyright (c) 2013 Oleg Glozman
+	@license Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+*/
+;
+(function ($) {
+    var GroovyJplayerWrapper,
+        defaults = {},
+        __bind;
+
+    /**
+     * Context switcher, used for public API exposure.
+     *
+     * @param {function} func - Desired function for content switching.
+     * @param {Object} context - Dsired context to bind the function to.
+     * @return {function} - Bind referance function with this context switched
+     */
+    __bind = function (func, context) {
+        return function () {
+            return func.apply(context, arguments);
+        };
+    };
+
+
+    /**
+     * laylistQueue default options
+     *
+     * @namespace
+     * @name defaults
+     */
+    defaults = {
+        skin: 'orange',
+        namespace: 'groovy',
+        
+		debug: true,
+        
+        target: {
+            container: '#now-streaming'
+        },
+        
+        
+        ids: {
+            guiPlayerID: 'groovy-player',
+            jPlayerID: 'jPlayer',
+            jPlayerInspectorID: 'jPlayerInspector'
+        },
+        
+        
+        onPlay: function(e) {},
+        onPause: function(e) {},
+        onEnd: function(e) {},
+        onNext: function(e) {},
+        onPrevious: function(e) {}
+    };
+
+    //GroovyJplayerWrapper: Object
+    GroovyJplayerWrapper = function (el, options) {
+        var instance = $(el),
+            api = $.extend({}, defaults, options),
+            touch = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
+            methods = {};
+
+
+        // Store a reference to the GroovyJplayerWrapper instance
+        $.data(el, 'instanceRef', instance);
+        
+
+        /**
+         * Private GroovyJplayerWrapper methods
+         *
+         * @namespace
+         * @name methods
+         */
+        methods = {
+            /* private */
+			jPlayerEl: null,
+			
+			/* private */
+			inspectorEl: null,
+            
+            
+			/**
+             * Init function to draw layout and reset
+             */
+            bootstrap: function () {
+                this.layout();  // Apply layout
+            },
+
+
+            /**
+             * Appends layout to the body
+             */
+            layout: function () {
+                this._appender(this.view.jPlayerSkinLayout(), api.target.container);
+
+                this.initJplayer();
+                this.subscribeEvents();
+            },
+            
+            
+            /**
+             * 
+             */
+            subscribeEvents: function() {
+				if (null === this.jPlayerEl) return false;
+				var jPlayerCSS = this.jPlayerEl.jPlayer('option', 'cssSelector');
+            	
+				this.jPlayerEl.bind($.jPlayer.event.play, function(e) {
+					api.onPlay(e);
+				});
+				
+				
+				this.jPlayerEl.bind($.jPlayer.event.pause, function(e) {
+					api.onPause(e);
+				});
+				
+				
+				this.jPlayerEl.bind($.jPlayer.event.ended, function(e) {
+					api.onEnd(e);
+				});
+				
+				
+				$(jPlayerCSS.next).on('click', function(e) {
+					api.onNext(e);
+				});
+				
+				
+				$(jPlayerCSS.previous).on('click', function(e) {
+					api.onPrevious(e);
+				});
+            },
+
+
+            initJplayer: function() {
+            	this.jPlayerEl = $('<div id="'+ api.ids.jPlayerID +'"></div>');
+				this.inspectorEl = $('<div id="'+ api.ids.jPlayerInspectorID +'"></div>');
+            	
+                this._appender(this.jPlayerEl, api.target.container);
+                
+				this.jPlayerEl.jPlayer({
+                        cssSelectorAncestor: '#'+ api.ids.guiPlayerID,
+                        
+                        cssSelector: {
+                            gui: '.'+ api.namespace +'-gui',
+                            play: '.'+ api.namespace +'-play',
+                            pause: '.'+ api.namespace +'-pause',
+                            next: '.'+ api.namespace +'-next',
+                            previous: '.'+ api.namespace +'-previous',
+                            mute: '.'+ api.namespace +'-mute',
+                            unmute: '.'+ api.namespace +'-unmute',
+                            seekBar: '.'+ api.namespace +'-seek-bar',
+                            playBar: '.'+ api.namespace +'-play-bar',
+                            currentTime: '.'+ api.namespace +'-current-time',
+                            duration: '.'+ api.namespace +'-duration',
+                            volumeBar: '.'+ api.namespace +'-volume-progress-bg',
+                            volumeBarValue: '.'+ api.namespace +'-volume-bar-value',
+                            volumeMax: '.'+ api.namespace +'-volume-max',
+                            repeat: '.'+ api.namespace +'-repeat',
+                            repeatOff: '.'+ api.namespace +'-repeat.off',
+                        },
+                        
+                		solution: 'html',
+                        supplied: 'mp3',
+                		smoothPlayBar: true,
+                		keyEnabled: true
+                	});
+                	
+                	/*
+	                if (true === api.debug) {
+	                	this._appender(this.inspectorEl, $('body'));
+	                	
+	                	this.inspectorEl.jPlayerInspector({
+	                		jPlayer: this.jPlayerEl
+						});
+	                }*/
+	                
+	                return this;
+            },
+
+
+            /**
+             * View object, contains the plugin HTML structure.
+             *
+             * @namespace
+             * @name view
+             */
+            view: {
+                /**
+                 * HTML structure of the droppable/sortable zone. Contains also the placeholder for the
+                 * mediaplayer which can be triggered and controlling the widget.
+                 *
+                 * @return {string} HTML
+                 */
+                jPlayerSkinLayout: function () {
+                    var html = [
+                        '<div id="'+ api.ids.guiPlayerID +'" class="'+ api.namespace +'-gui">',
+                            '<ul class="'+ api.namespace +'-skin">',
+                    			'<li class="'+ api.namespace +'-controls">',
+                    				'<ul>',
+                    				    '<li class="'+ api.namespace +'-icons '+ api.namespace +'-previous"><em><em>previous</em></em></li>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-play"><em><em>play</em></em></li>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-pause"><em><em>pause</em></em></li>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-next"><em><em>next</em></em></li>',
+                    			     '</ul>',
+                                '</li>',
+                                
+                                '<li class="'+ api.namespace +'-thumbnail"><div><img src="" alt="" /></div></li>',
+
+                        		'<li class="'+ api.namespace +'-info">',
+                                    '<span class="'+ api.namespace +'-song-info"><strong>Artist</strong> - <em>Song Name</em></span>',
+                                    '<div class="'+ api.namespace +'-song-meta">',
+                                        '<span class="'+ api.namespace +'-current-time">&nbsp;</span>',
+                                        '<div class="'+ api.namespace +'-progress-bar">',
+                                            '<div class="'+ api.namespace +'-seek-bar"><div class="'+ api.namespace +'-play-bar"></div></div>',
+                                        '</div>',
+                                        '<span class="'+ api.namespace +'-duration">&nbsp;</span>',
+                                    '</div>',
+                                    
+                                    '<div class="'+ api.namespace +'-options">',
+                                        '<ul>',
+                                            '<li class="'+ api.namespace +'-icons '+ api.namespace +'-shuffle"><em><em>shuffle</em></em></li>',
+                                            '<li class="'+ api.namespace +'-icons '+ api.namespace +'-repeat"><em><em>repeat</em></em></li>',
+                                            '<li class="'+ api.namespace +'-icons '+ api.namespace +'-crossfade"><em><em>crossfade</em></em></li>',
+                                        '</ul>',
+                                    '</div>',
+                                '</li>',
+                                
+                                '<li class="'+ api.namespace +'-volume">',
+                                    '<ul>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-mute"><em><em>mute</em></em></li>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-unmute"><em><em>unmute</em></em></li>',
+                                        '<li class="'+ api.namespace +'-volume-progress">',
+                                            '<div class="'+ api.namespace +'-volume-progress-bg"><div class="'+ api.namespace +'-volume-bar-value"></div></div>',
+                                        '</li>',
+                                        '<li class="'+ api.namespace +'-icons '+ api.namespace +'-volume-max"><em><em>volume max</em></em></li>',
+                                    '</ul>',
+                                '</li>',
+                        	'</ul>',
+                            
+                            '<div class="clear"></div>',
+                        '</div>'
+                    ];
+
+                    return $(html.join(' '));
+                }
+            },
+            
+            setSongMeta: function (artist, song, img) {
+				$('.'+ api.namespace +'-song-info strong').html(artist);
+            	$('.'+ api.namespace +'-song-info em').html(song);
+            	$('.'+ api.namespace +'-thumbnail img').attr({src: img});
+            	
+                return this;
+            },
+            
+            
+            _appender: function (source, target) {
+                return $(source).appendTo(target);
+            }
+            
+        };
+
+        //GroovyJplayerWrapper: Initialize
+        methods.bootstrap();
+
+
+        // public API
+        $.extend(instance, {
+            
+			/**
+             * 
+             */
+            setSongMeta: __bind(function (artist, song, img) {
+                return this.setSongMeta(artist, song, img);
+            }, methods),
+            
+            
+
+            /**
+             * 
+             */
+            pause: __bind(function () {
+                return this._onPause();
+            }, methods)
+        });
+        
+        return instance;
+    };
+
+
+    //GroovyJplayerWrapper: Plugin Function
+    /**
+     *
+     */
+    $.fn.GroovyJplayerWrapper = function (options) {
+        // Helper strings to quickly perform functions on the draggable queue object.
+        var args = Array.prototype.slice.call(arguments).slice(1), //Convert it to a real Array object.
+            $GroovyJplayerWrapper = $(this).data('instanceRef');
+
+        if ('undefined' === typeof ($GroovyJplayerWrapper)) {
+            this.each(function () {
+                if ('undefined' === typeof ($(this).data('instanceRef'))) {
+                    $GroovyJplayerWrapper = new GroovyJplayerWrapper(this, options || {});
+                }
+            });
+        }
+
+        if ('object' !== typeof (options)) {
+            return $GroovyJplayerWrapper[options].apply(this, args);
+        }
+    };
+
+})(jQuery);

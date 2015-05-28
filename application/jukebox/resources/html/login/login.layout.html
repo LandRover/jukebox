@@ -1,0 +1,27 @@
+<section id="page-login">
+	<div class="options">
+		<div class="box-large login">
+			<h1>Welcome</h1>
+			<form method="post" action="/login">
+				<div class="message red onError hide">
+				    <span><b>Notice:</b> <em>dynamic text edit here..</em></span>
+				</div>
+				
+				<p><input class="send" type="text" name="login" value="" placeholder="Username or Email"/></p>
+				<p><input class="send" type="password" name="password" value="" placeholder="Password"/></p>
+				<p class="remember_me">
+					<label>
+						<input class="send" type="hidden" name="remember_me" id="remember_me" value="1"/>&nbsp;
+					</label>
+				</p>
+				
+				<p class="submit"><input type="submit" name="commit" value="Login"/></p>
+			</form>
+		</div>
+	</div>
+	
+	<div class="login-help">
+		<p>Forgot your password? <a href="javascript:;" onclick="alert('Mail me.');">Click here to reset it</a>.</p>
+    </div>
+
+</section>

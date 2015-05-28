@@ -1,0 +1,11 @@
+<%
+	$(el).attr({
+		'data-artist': JSON.stringify({id: model.id, title: model.name}),
+	});
+%>
+<em>
+	<figure>
+		<img src="/stream/thumbnail/small/artist/<%- model.name %>.jpg" alt=""/>
+	</figure>
+</em>
+<h4><%- model.name %></h4>

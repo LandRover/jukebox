@@ -1,0 +1,21 @@
+<div class="album-info-bit">
+	<a href="#/album/<%- album.get('artist_title') %>/<%- album.get('name') %>">
+		<img src="/stream/thumbnail/small/album/<%- album.get('path') %>.jpg" alt="<%- album.get('name') %>" />
+		<em><i>&nbsp;</i></em>
+	</a>
+    <div class="actions">
+		<button type="button" class="btn btn-default btn-sm btn-play">
+			<span class="glyphicon glyphicon-play"></span>
+		</button>
+    </div>
+	
+	<div class="album-title">
+        <h2><a href="#/album/<%- album.get('artist_title') %>/<%- album.get('name') %>"><%- album.get('name') %></a></h2>
+    </div>
+    <div class="album-details">
+    	<ul>
+    		<li><span class="glyphicon glyphicon-calendar"></span> <span class="year"><%- album.get('year') %></span></li>
+			<li><span class="glyphicon glyphicon-map-marker"></span> <span class="count_songs"><%- album.get('count_songs') %></span></li>
+		</ul>
+	</div>
+</div>

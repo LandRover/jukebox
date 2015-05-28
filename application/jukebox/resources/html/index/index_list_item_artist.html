@@ -1,0 +1,16 @@
+<div class="item-info-bit">
+	<a href="#/artist/<%- model.get('name') %>">
+		<img src="/stream/thumbnail/<%- thumbnailSize %>/artist/<%- model.get('name') %>.jpg" alt="<%- model.get('name') %>" />
+		<em><i>&nbsp;</i></em>
+	</a>
+	
+	<div class="item-title">
+		<h6 class="<%- category %>"><%- category %></h6><h6 class="<%- type %>"><%- type %></h6>
+        <h2><a href="#/artist/<%- model.get('name') %>"><%- model.get('name') %></a></h2>
+    </div>
+    <div class="item-details">
+    	<ul>
+			<li><span class="glyphicon glyphicon-map-marker"></span> <span class="count_albums"><%- model.get('count_albums') %></span></li>
+		</ul>
+	</div>
+</div>
