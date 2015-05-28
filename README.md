@@ -1,5 +1,7 @@
 # Jukebox v0.1
 
+![](https://raw.githubusercontent.com/LandRover/jukebox/master/application/jukebox/resources/images/_preview-img-v0.1.png)
+
 ## What is Jukebox?
 Jukebox is an open-source music platform, a Grooveshark(R.I.P) inspired. Built using MARS for backend and backbone(Underscore and jQuery) for frontend.
 
