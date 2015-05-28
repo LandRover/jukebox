@@ -1,2 +1,10 @@
 application/logs
 application/tmp
+
+#my dev config - no need to commit
+application/jukebox/config
+
+#local dev box path
+mp3
+logs
+stats
