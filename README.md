@@ -78,5 +78,5 @@ To learn more about these powerful libraries, check this out:
 * **Templating**: Smarty ([smarty-php/smarty](https://github.com/smarty-php/smarty))
 * **Frontend/Client Side**: BackBone ([jashkenas/backbone](https://github.com/jashkenas/backbone))
 * **UI**: Bootstrap ([twitter/bootstrap](https://github.com/twitter/bootstrap))
- 
+
 MARS is mainly a wrapper over Slim and all the other components to make it easier to swtich and contain shared utils that used under the MARS framework.
